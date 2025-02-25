@@ -5,7 +5,7 @@ public class Avaliacao {
     private Corrida corrida;
     private Passageiro avaliador;
     private Motorista avaliado;
-    private double nota;
+    private float nota;
     private String comentario;
 }
 
