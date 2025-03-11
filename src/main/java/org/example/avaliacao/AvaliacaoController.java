@@ -1,3 +1,11 @@
+package org.example.avaliacao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
@@ -6,28 +14,27 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @PostMapping
-    public ResponseEntity<Avaliacao> criarAvaliacao(@RequestBody Avaliacao avaliacao) {
-        return ResponseEntity.ok(avaliacaoService.salvar(avaliacao));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Avaliacao> buscarPorId(@PathVariable int id) {
-        return ResponseEntity.ok(avaliacaoService.buscarPorId(id));
+    public Avaliacao criarAvaliacao(@RequestBody Avaliacao avaliacao) {
+        return avaliacaoService.salvar(avaliacao);
     }
 
     @GetMapping
-    public ResponseEntity<List<Avaliacao>> listarTodas() {
-        return ResponseEntity.ok(avaliacaoService.listarTodas());
+    public List<Avaliacao> listarAvaliacoes() {
+        return avaliacaoService.listarTodas();
+    }
+
+    @GetMapping("/{id}")
+    public Avaliacao buscarAvaliacao(@PathVariable int id) {
+        return avaliacaoService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Avaliacao> atualizar(@PathVariable int id, @RequestBody Avaliacao avaliacao) {
-        return ResponseEntity.ok(avaliacaoService.atualizar(id, avaliacao));
+    public Avaliacao atualizarAvaliacao(@PathVariable int id, @RequestBody Avaliacao avaliacao) {
+        return avaliacaoService.atualizar(id, avaliacao);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public void deletarAvaliacao(@PathVariable int id) {
         avaliacaoService.deletar(id);
-        return ResponseEntity.noContent().build();
     }
 }

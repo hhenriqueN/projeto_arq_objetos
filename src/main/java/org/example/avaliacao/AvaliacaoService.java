@@ -1,30 +1,43 @@
+package org.example.avaliacao;
+
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AvaliacaoService {
 
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+    private int proximoId = 1;
 
     public Avaliacao salvar(Avaliacao avaliacao) {
-        return avaliacaoRepository.save(avaliacao);
-    }
-
-    public Avaliacao buscarPorId(int id) {
-        return avaliacaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+        avaliacao.setId(proximoId++);
+        avaliacoes.add(avaliacao);
+        return avaliacao;
     }
 
     public List<Avaliacao> listarTodas() {
-        return avaliacaoRepository.findAll();
+        return avaliacoes;
+    }
+
+    public Avaliacao buscarPorId(int id) {
+        return avaliacoes.stream()
+                .filter(avaliacao -> avaliacao.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public Avaliacao atualizar(int id, Avaliacao novaAvaliacao) {
         Avaliacao existente = buscarPorId(id);
-        existente.setNota(novaAvaliacao.getNota());
-        existente.setComentario(novaAvaliacao.getComentario());
-        return avaliacaoRepository.save(existente);
+        if (existente != null) {
+            existente.setNota(novaAvaliacao.getNota());
+            existente.setComentario(novaAvaliacao.getComentario());
+        }
+        return existente;
     }
 
     public void deletar(int id) {
-        avaliacaoRepository.deleteById(id);
+        avaliacoes.removeIf(avaliacao -> avaliacao.getId() == id);
     }
 }
