@@ -1,8 +1,8 @@
 package org.example.avaliacao;
+import org.example.motorista.Motorista;
+import org.example.corrida.Corrida;
+import org.example.passageiro.Passageiro;
 
-import org.example.Corrida;
-import org.example.Motorista;
-import org.example.Passageiro;
 
 public class Avaliacao {
     private int id;
