@@ -60,4 +60,3 @@ public class Avaliacao {
         this.comentario = comentario;
     }
 }
-
