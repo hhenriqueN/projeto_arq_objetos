@@ -4,7 +4,17 @@ public class Passageiro {
     private String nome;
     private String telefone;
     private String email;
-    private String formaPagamento;
+    private String formaPagamento; // "Cartão", "Pix", "Dinheiro"
+
+    public Passageiro() {
+    }
+
+    public Passageiro(String nome, String telefone, String email, String formaPagamento) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.formaPagamento = formaPagamento;
+    }
 
     public String getNome() {
         return nome;

@@ -2,45 +2,41 @@ package org.example.passageiro;
 
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PassageiroService {
 
-    private HashMap<String, Passageiro> passageiros = new HashMap<>();
+    private List<Passageiro> passageiros = new ArrayList<>();
 
-    public HashMap<String, Passageiro> getPassageiros() {
+    public Passageiro salvar(Passageiro passageiro) {
+        passageiros.add(passageiro);
+        return passageiro;
+    }
+
+    public List<Passageiro> listarTodos() {
         return passageiros;
     }
 
-    public void salvarPassageiro(Passageiro passageiro) {
-        passageiros.put(passageiro.getEmail(), passageiro);
+    public Passageiro buscarPorEmail(String email) {
+        return passageiros.stream()
+                .filter(passageiro -> passageiro.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
     }
 
-    public Passageiro getPassageiro(String email) {
-        return passageiros.get(email);
-    }
-
-    public Passageiro removerPassageiro(String email) {
-        return passageiros.remove(email);
-    }
-
-    public Passageiro editarPassageiro(String email, Passageiro passageiro) {
-        Passageiro passageiroEditar = getPassageiro(email);
-
-        if (passageiroEditar != null) {
-            if (passageiro.getNome() != null) {
-                passageiroEditar.setNome(passageiro.getNome());
-            }
-
-            if (passageiro.getTelefone() != null) {
-                passageiroEditar.setTelefone(passageiro.getTelefone());
-            }
-
-            if (passageiro.getFormaPagamento() != null) {
-                passageiroEditar.setFormaPagamento(passageiro.getFormaPagamento());
-            }
+    public Passageiro atualizar(String email, Passageiro novoPassageiro) {
+        Passageiro existente = buscarPorEmail(email);
+        if (existente != null) {
+            existente.setNome(novoPassageiro.getNome());
+            existente.setTelefone(novoPassageiro.getTelefone());
+            existente.setFormaPagamento(novoPassageiro.getFormaPagamento());
         }
-        return passageiroEditar;
+        return existente;
+    }
+
+    public void deletar(String email) {
+        passageiros.removeIf(passageiro -> passageiro.getEmail().equals(email));
     }
 }
