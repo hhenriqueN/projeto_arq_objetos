@@ -12,28 +12,28 @@ public class PassageiroController {
     @Autowired
     private PassageiroService passageiroService;
 
-    @PostMapping
-    public Passageiro criarPassageiro(@RequestBody Passageiro passageiro) {
-        return passageiroService.salvar(passageiro);
-    }
-
     @GetMapping
     public List<Passageiro> listarPassageiros() {
-        return passageiroService.listarTodos();
+        return passageiroService.getPassageiros();
     }
 
-    @GetMapping("/{email}")
-    public Passageiro buscarPassageiro(@PathVariable String email) {
-        return passageiroService.buscarPorEmail(email);
+    @PostMapping
+    public void cadastrarPassageiro(@RequestBody Passageiro passageiro) {
+        passageiroService.salvarPassageiro(passageiro);
     }
 
-    @PutMapping("/{email}")
-    public Passageiro atualizarPassageiro(@PathVariable String email, @RequestBody Passageiro passageiro) {
-        return passageiroService.atualizar(email, passageiro);
+    @GetMapping("/{cpf}")
+    public Passageiro buscarPassageiro(@PathVariable String cpf) {
+        return passageiroService.getPassageiro(cpf);
     }
 
-    @DeleteMapping("/{email}")
-    public void deletarPassageiro(@PathVariable String email) {
-        passageiroService.deletar(email);
+    @DeleteMapping("/{cpf}")
+    public Passageiro deletarPassageiro(@PathVariable String cpf) {
+        return passageiroService.removerPassageiro(cpf);
+    }
+
+    @PutMapping("/{cpf}")
+    public Passageiro atualizarPassageiro(@PathVariable String cpf, @RequestBody Passageiro passageiro) {
+        return passageiroService.editarPassageiro(cpf, passageiro);
     }
 }
