@@ -1,19 +1,24 @@
 package org.example.passageiro;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "passageiro")
 public class Passageiro {
+
+    @Id
+    private String cpf;
     private String nome;
     private String telefone;
-    private String email;
-    private String formaPagamento; // "Cartão", "Pix", "Dinheiro"
 
-    public Passageiro() {
+    public Passageiro() {}
+
+    public String getCpf() {
+        return cpf;
     }
 
-    public Passageiro(String nome, String telefone, String email, String formaPagamento) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
-        this.formaPagamento = formaPagamento;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getNome() {
@@ -30,21 +35,5 @@ public class Passageiro {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(String formaPagamento) {
-        this.formaPagamento = formaPagamento;
     }
 }
