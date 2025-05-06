@@ -1,42 +1,42 @@
 package org.example.passageiro;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PassageiroService {
 
-    private List<Passageiro> passageiros = new ArrayList<>();
+    @Autowired
+    private PassageiroRepository passageiroRepository;
 
-    public Passageiro salvar(Passageiro passageiro) {
-        passageiros.add(passageiro);
+    public List<Passageiro> getPassageiros() {
+        return passageiroRepository.findAll();
+    }
+
+    public void salvarPassageiro(Passageiro passageiro) {
+        passageiroRepository.save(passageiro);
+    }
+
+    public Passageiro getPassageiro(String cpf) {
+        return passageiroRepository.findById(cpf).orElse(null);
+    }
+
+    public Passageiro removerPassageiro(String cpf) {
+        Passageiro passageiro = getPassageiro(cpf);
+        if (passageiro != null) {
+            passageiroRepository.deleteById(cpf);
+        }
         return passageiro;
     }
 
-    public List<Passageiro> listarTodos() {
-        return passageiros;
-    }
-
-    public Passageiro buscarPorEmail(String email) {
-        return passageiros.stream()
-                .filter(passageiro -> passageiro.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public Passageiro atualizar(String email, Passageiro novoPassageiro) {
-        Passageiro existente = buscarPorEmail(email);
-        if (existente != null) {
-            existente.setNome(novoPassageiro.getNome());
-            existente.setTelefone(novoPassageiro.getTelefone());
-            existente.setFormaPagamento(novoPassageiro.getFormaPagamento());
+    public Passageiro editarPassageiro(String cpf, Passageiro novo) {
+        Passageiro passageiro = getPassageiro(cpf);
+        if (passageiro != null) {
+            novo.setCpf(cpf);
+            return passageiroRepository.save(novo);
         }
-        return existente;
-    }
-
-    public void deletar(String email) {
-        passageiros.removeIf(passageiro -> passageiro.getEmail().equals(email));
+        return null;
     }
 }
