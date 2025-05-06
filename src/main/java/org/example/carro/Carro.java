@@ -1,21 +1,20 @@
 package org.example.carro;
 
 import org.example.motorista.Motorista;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "carro")
 public class Carro {
-    private String modelo;
+
+    @Id
     private String placa;
+    private String modelo;
     private String cor;
     private int ano;
     private Motorista motorista;
 
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
+    public Carro() {}
 
     public String getPlaca() {
         return placa;
@@ -23,6 +22,14 @@ public class Carro {
 
     public void setPlaca(String placa) {
         this.placa = placa;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     public String getCor() {

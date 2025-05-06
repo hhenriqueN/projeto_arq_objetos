@@ -1,38 +1,42 @@
 package org.example.historico;
 
-import org.example.passageiro.Passageiro;
-import org.example.corrida.Corrida;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HistoricoService {
 
-    private HashMap<String, Historico> historicos = new HashMap<>();
+    @Autowired
+    private HistoricoRepository historicoRepository;
 
-    // Método para buscar o histórico de corridas de um passageiro
-    public Historico getHistorico(Passageiro passageiro) {
-        return historicos.get(passageiro.getEmail());
+    public List<Historico> getHistoricos() {
+        return historicoRepository.findAll();
     }
 
-    // Método para adicionar uma corrida ao histórico de um passageiro
-    public void adicionarCorridaAoHistorico(Passageiro passageiro, Corrida corrida) {
-        Historico historico = historicos.get(passageiro.getEmail());
+    public void salvarHistorico(Historico historico) {
+        historicoRepository.save(historico);
+    }
 
-        if (historico == null) {
-            historico = new Historico();
-            historico.setPassageiro(passageiro);
-            historico.setCorridas(new ArrayList<>());
-            historicos.put(passageiro.getEmail(), historico);
+    public Historico getHistorico(String id) {
+        return historicoRepository.findById(id).orElse(null);
+    }
+
+    public Historico removerHistorico(String id) {
+        Historico historico = getHistorico(id);
+        if (historico != null) {
+            historicoRepository.deleteById(id);
         }
-
-        historico.getCorridas().add(corrida);
+        return historico;
     }
 
-    // Método para remover um histórico de corridas de um passageiro
-    public void removerHistorico(Passageiro passageiro) {
-        historicos.remove(passageiro.getEmail());
+    public Historico editarHistorico(String id, Historico novo) {
+        Historico historico = getHistorico(id);
+        if (historico != null) {
+            novo.setId(id);
+            return historicoRepository.save(novo);
+        }
+        return null;
     }
 }

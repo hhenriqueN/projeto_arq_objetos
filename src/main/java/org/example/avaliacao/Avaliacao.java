@@ -1,54 +1,51 @@
 package org.example.avaliacao;
+
 import org.example.motorista.Motorista;
-import org.example.corrida.Corrida;
 import org.example.passageiro.Passageiro;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
+@Document(collection = "avaliacao")
 public class Avaliacao {
-    private int id;
-    private Corrida corrida;
-    private Passageiro avaliador;
-    private Motorista avaliado;
-    private float nota;
+
+    @Id
+    private String id;
+    private Passageiro passageiro;
+    private Motorista motorista;
+    private double nota;
     private String comentario;
 
-    public int getId() {
+    public Avaliacao() {}
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Corrida getCorrida() {
-        return corrida;
+    public Passageiro getPassageiro() {
+        return passageiro;
     }
 
-    public void setCorrida(Corrida corrida) {
-        this.corrida = corrida;
+    public void setPassageiro(Passageiro passageiro) {
+        this.passageiro = passageiro;
     }
 
-    public Passageiro getAvaliador() {
-        return avaliador;
+    public Motorista getMotorista() {
+        return motorista;
     }
 
-    public void setAvaliador(Passageiro avaliador) {
-        this.avaliador = avaliador;
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
     }
 
-    public Motorista getAvaliado() {
-        return avaliado;
-    }
-
-    public void setAvaliado(Motorista avaliado) {
-        this.avaliado = avaliado;
-    }
-
-    public float getNota() {
+    public double getNota() {
         return nota;
     }
 
-    public void setNota(float nota) {
+    public void setNota(double nota) {
         this.nota = nota;
     }
 

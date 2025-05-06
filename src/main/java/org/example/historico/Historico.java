@@ -1,27 +1,42 @@
 package org.example.historico;
-import org.example.passageiro.Passageiro;
+
 import org.example.corrida.Corrida;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
-
+@Document(collection = "historico")
 public class Historico {
-    private Passageiro passageiro;
-    private ArrayList<Corrida> corridas;
 
-    public Passageiro getPassageiro() {
-        return passageiro;
+    @Id
+    private String id;
+    private Corrida corrida;
+    private LocalDateTime dataHora;
+
+    public Historico() {}
+
+    public String getId() {
+        return id;
     }
 
-    public void setPassageiro(Passageiro passageiro) {
-        this.passageiro = passageiro;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public ArrayList<Corrida> getCorridas() {
-        return corridas;
+    public Corrida getCorrida() {
+        return corrida;
     }
 
-    public void setCorridas(ArrayList<Corrida> corridas) {
-        this.corridas = corridas;
+    public void setCorrida(Corrida corrida) {
+        this.corrida = corrida;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 }

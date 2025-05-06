@@ -1,61 +1,29 @@
 package org.example.motorista;
 
-import org.example.carro.Carro;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class MotoristaService {
 
-    private HashMap<String, Motorista> motoristas = new HashMap<>();
+    @Autowired
+    private MotoristaRepository motoristaRepository;
 
-    public HashMap<String, Motorista> getMotoristas() {
-        return motoristas;
+    public List<Motorista> getMotoristas() {
+        return motoristaRepository.findAll();
     }
 
     public void salvarMotorista(Motorista motorista) {
-        motoristas.put(motorista.getCpf(), motorista);
+        motoristaRepository.save(motorista);
     }
 
     public Motorista getMotorista(String cpf) {
-        return motoristas.get(cpf);
+        return motoristaRepository.findById(cpf).orElse(null);
     }
 
-    public Motorista removerMotorista(String cpf) {
-        return motoristas.remove(cpf);
-    }
-
-    public Motorista editarMotorista(String cpf, Motorista motorista) {
-        Motorista motoristaEditar = getMotorista(cpf);
-
-        if (motoristaEditar != null) {
-            if (motorista.getNome() != null) {
-                motoristaEditar.setNome(motorista.getNome());
-            }
-
-            if (motorista.getTelefone() != null) {
-                motoristaEditar.setTelefone(motorista.getTelefone());
-            }
-
-            if (motorista.isDisponivel() != motoristaEditar.isDisponivel()) {
-                motoristaEditar.setDisponivel(motorista.isDisponivel());
-            }
-
-            // Atualizando o carro do motorista
-            if (motorista.getCarro() != null) {
-                motoristaEditar.setCarro(motorista.getCarro());
-            }
-        }
-        return motoristaEditar;
-    }
-
-    // Método para associar um carro ao motorista
-    public Motorista associarCarroAoMotorista(String cpf, Carro carro) {
-        Motorista motorista = getMotorista(cpf);
-        if (motorista != null) {
-            motorista.setCarro(carro);
-        }
-        return motorista;
+    public void removerMotorista(String cpf) {
+        motoristaRepository.deleteById(cpf);
     }
 }

@@ -1,34 +1,32 @@
 package org.example.split;
 
-import java.util.List;
-
 public class SplitRequest {
 
-    private int corridaId;
-    private double valorTotal;
-    private List<String> emailPassageiros;
+    private String corridaId;
+    private String passageiroCpf;
+    private double valor;
 
-    public int getCorridaId() {
+    public String getCorridaId() {
         return corridaId;
     }
 
-    public void setCorridaId(int corridaId) {
+    public void setCorridaId(String corridaId) {
         this.corridaId = corridaId;
     }
 
-    public double getValorTotal() {
-        return valorTotal;
+    public String getPassageiroCpf() {
+        return passageiroCpf;
     }
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
+    public void setPassageiroCpf(String passageiroCpf) {
+        this.passageiroCpf = passageiroCpf;
     }
 
-    public List<String> getEmailPassageiros() {
-        return emailPassageiros;
+    public double getValor() {
+        return valor;
     }
 
-    public void setEmailPassageiros(List<String> emailPassageiros) {
-        this.emailPassageiros = emailPassageiros;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 }

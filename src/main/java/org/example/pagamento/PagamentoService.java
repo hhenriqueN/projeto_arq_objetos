@@ -1,41 +1,42 @@
 package org.example.pagamento;
 
-import org.example.corrida.Corrida;
-import org.example.passageiro.Passageiro;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class PagamentoService {
 
-    private HashMap<Integer, Pagamento> pagamentos = new HashMap<>();
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
-    // Método para criar um pagamento
-    public Pagamento criarPagamento(Passageiro passageiro, Corrida corrida, double valor, String formaPagamento) {
-        Pagamento pagamento = new Pagamento();
-        pagamento.setCorrida(corrida);
-        pagamento.setPassageiro(passageiro);
-        pagamento.setValor(valor);
-        pagamento.setFormaPagamento(formaPagamento);
-        pagamento.setPago(false); // Inicialmente o pagamento não está pago
-        pagamento.setId(pagamentos.size() + 1); // Gerando um ID simples
-
-        pagamentos.put(pagamento.getId(), pagamento);
-        return pagamento;
+    public List<Pagamento> getPagamentos() {
+        return pagamentoRepository.findAll();
     }
 
-    // Método para marcar um pagamento como realizado
-    public Pagamento realizarPagamento(int pagamentoId) {
-        Pagamento pagamento = pagamentos.get(pagamentoId);
+    public void salvarPagamento(Pagamento pagamento) {
+        pagamentoRepository.save(pagamento);
+    }
+
+    public Pagamento getPagamento(String id) {
+        return pagamentoRepository.findById(id).orElse(null);
+    }
+
+    public Pagamento removerPagamento(String id) {
+        Pagamento pagamento = getPagamento(id);
         if (pagamento != null) {
-            pagamento.setPago(true);
+            pagamentoRepository.deleteById(id);
         }
         return pagamento;
     }
 
-    // Método para buscar um pagamento
-    public Pagamento getPagamento(int pagamentoId) {
-        return pagamentos.get(pagamentoId);
+    public Pagamento editarPagamento(String id, Pagamento novo) {
+        Pagamento pagamento = getPagamento(id);
+        if (pagamento != null) {
+            novo.setId(id);
+            return pagamentoRepository.save(novo);
+        }
+        return null;
     }
 }

@@ -1,21 +1,25 @@
 package org.example.pagamento;
+
 import org.example.corrida.Corrida;
-import org.example.passageiro.Passageiro;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
+@Document(collection = "pagamento")
 public class Pagamento {
-    private int id;
-    private Corrida corrida;
-    private Passageiro passageiro;
-    private double valor;
-    private String formaPagamento;
-    private boolean pago;
 
-    public int getId() {
+    @Id
+    private String id;
+    private Corrida corrida;
+    private String metodo; // ex: "PIX", "Cartão", "Dinheiro"
+    private double valor;
+
+    public Pagamento() {}
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -27,12 +31,12 @@ public class Pagamento {
         this.corrida = corrida;
     }
 
-    public Passageiro getPassageiro() {
-        return passageiro;
+    public String getMetodo() {
+        return metodo;
     }
 
-    public void setPassageiro(Passageiro passageiro) {
-        this.passageiro = passageiro;
+    public void setMetodo(String metodo) {
+        this.metodo = metodo;
     }
 
     public double getValor() {
@@ -41,21 +45,5 @@ public class Pagamento {
 
     public void setValor(double valor) {
         this.valor = valor;
-    }
-
-    public String getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(String formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
-
-    public boolean isPago() {
-        return pago;
-    }
-
-    public void setPago(boolean pago) {
-        this.pago = pago;
     }
 }

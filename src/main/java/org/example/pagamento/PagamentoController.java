@@ -1,10 +1,9 @@
 package org.example.pagamento;
 
-import org.example.corrida.Corrida;
-import org.example.passageiro.Passageiro;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -13,28 +12,28 @@ public class PagamentoController {
     @Autowired
     private PagamentoService pagamentoService;
 
-    // Rota para criar um pagamento
+    @GetMapping
+    public List<Pagamento> listarPagamentos() {
+        return pagamentoService.getPagamentos();
+    }
+
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Pagamento criarPagamento(@RequestBody PagamentoRequest pagamentoRequest) {
-        Passageiro passageiro = new Passageiro(); // Simulação de criação de passageiro
-        passageiro.setEmail(pagamentoRequest.getEmailPassageiro());
-
-        Corrida corrida = new Corrida(); // Simulação de criação de corrida
-        corrida.setId(pagamentoRequest.getCorridaId());
-
-        return pagamentoService.criarPagamento(passageiro, corrida, pagamentoRequest.getValor(), pagamentoRequest.getFormaPagamento());
+    public void cadastrarPagamento(@RequestBody Pagamento pagamento) {
+        pagamentoService.salvarPagamento(pagamento);
     }
 
-    // Rota para realizar o pagamento
-    @PutMapping("/{pagamentoId}")
-    public Pagamento realizarPagamento(@PathVariable int pagamentoId) {
-        return pagamentoService.realizarPagamento(pagamentoId);
+    @GetMapping("/{id}")
+    public Pagamento buscarPagamento(@PathVariable String id) {
+        return pagamentoService.getPagamento(id);
     }
 
-    // Rota para consultar um pagamento
-    @GetMapping("/{pagamentoId}")
-    public Pagamento getPagamento(@PathVariable int pagamentoId) {
-        return pagamentoService.getPagamento(pagamentoId);
+    @DeleteMapping("/{id}")
+    public Pagamento deletarPagamento(@PathVariable String id) {
+        return pagamentoService.removerPagamento(id);
+    }
+
+    @PutMapping("/{id}")
+    public Pagamento atualizarPagamento(@PathVariable String id, @RequestBody Pagamento pagamento) {
+        return pagamentoService.editarPagamento(id, pagamento);
     }
 }

@@ -1,26 +1,28 @@
 package org.example.corrida;
+
 import org.example.motorista.Motorista;
 import org.example.passageiro.Passageiro;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
-
+@Document(collection = "corrida")
 public class Corrida {
 
-
-    private int id;
+    @Id
+    private String id;
     private Passageiro passageiro;
     private Motorista motorista;
-    private String pontoPartida;
-    private String pontoDestino;
-    private double preco;
-    private String status;
+    private String origem;
+    private String destino;
+    private double valor;
 
+    public Corrida() {}
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -40,35 +42,27 @@ public class Corrida {
         this.motorista = motorista;
     }
 
-    public String getPontoPartida() {
-        return pontoPartida;
+    public String getOrigem() {
+        return origem;
     }
 
-    public void setPontoPartida(String pontoPartida) {
-        this.pontoPartida = pontoPartida;
+    public void setOrigem(String origem) {
+        this.origem = origem;
     }
 
-    public String getPontoDestino() {
-        return pontoDestino;
+    public String getDestino() {
+        return destino;
     }
 
-    public void setPontoDestino(String pontoDestino) {
-        this.pontoDestino = pontoDestino;
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
-    public double getPreco() {
-        return preco;
+    public double getValor() {
+        return valor;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 }

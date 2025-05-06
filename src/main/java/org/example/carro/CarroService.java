@@ -1,50 +1,42 @@
 package org.example.carro;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class CarroService {
 
-    private HashMap<String, Carro> carros = new HashMap<>();
+    @Autowired
+    private CarroRepository carroRepository;
 
-    public HashMap<String, Carro> getCarros() {
-        return carros;
+    public List<Carro> getCarros() {
+        return carroRepository.findAll();
     }
 
     public void salvarCarro(Carro carro) {
-        carros.put(carro.getPlaca(), carro);
+        carroRepository.save(carro);
     }
 
     public Carro getCarro(String placa) {
-        return carros.get(placa);
+        return carroRepository.findById(placa).orElse(null);
     }
 
     public Carro removerCarro(String placa) {
-        return carros.remove(placa);
+        Carro carro = getCarro(placa);
+        if (carro != null) {
+            carroRepository.deleteById(placa);
+        }
+        return carro;
     }
 
-    public Carro editarCarro(String placa, Carro carro) {
-        Carro carroEditar = getCarro(placa);
-
-        if (carroEditar != null) {
-            if (carro.getModelo() != null) {
-                carroEditar.setModelo(carro.getModelo());
-            }
-
-            if (carro.getCor() != null) {
-                carroEditar.setCor(carro.getCor());
-            }
-
-            if (carro.getAno() != 0) {
-                carroEditar.setAno(carro.getAno());
-            }
-
-            if (carro.getMotorista() != null) {
-                carroEditar.setMotorista(carro.getMotorista());
-            }
+    public Carro editarCarro(String placa, Carro novo) {
+        Carro carro = getCarro(placa);
+        if (carro != null) {
+            novo.setPlaca(placa);
+            return carroRepository.save(novo);
         }
-        return carroEditar;
+        return null;
     }
 }

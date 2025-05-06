@@ -1,61 +1,43 @@
 package org.example.split;
 
 import org.example.corrida.Corrida;
+import org.example.corrida.CorridaRepository;
 import org.example.passageiro.Passageiro;
+import org.example.passageiro.PassageiroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-
+import java.util.List;
 
 @Service
 public class SplitService {
 
-    private HashMap<Integer, Split> splits = new HashMap<>();
+    @Autowired
+    private SplitRepository splitRepository;
 
-    // Método para criar uma divisão de pagamento para uma corrida
-    public Split criarSplit(Corrida corrida, double valorTotal, ArrayList<Passageiro> passageiros) {
+    @Autowired
+    private CorridaRepository corridaRepository;
+
+    @Autowired
+    private PassageiroRepository passageiroRepository;
+
+    public void salvarSplit(SplitRequest splitRequest) {
+        Corrida corrida = corridaRepository.findById(splitRequest.getCorridaId()).orElse(null);
+        Passageiro passageiro = passageiroRepository.findById(splitRequest.getPassageiroCpf()).orElse(null);
+
+        if (corrida == null || passageiro == null) {
+            throw new RuntimeException("Corrida ou passageiro não encontrado");
+        }
+
         Split split = new Split();
         split.setCorrida(corrida);
-        split.setPassageiros(passageiros);
-        split.setValorPorPessoa(valorTotal / passageiros.size()); // Dividindo o valor total igualmente entre os passageiros
-        split.setStatusPagamento(new HashMap<>());
+        split.setPassageiro(passageiro);
+        split.setValor(splitRequest.getValor());
 
-        // Inicializando o status de pagamento de todos os passageiros como "não pago"
-        for (Passageiro passageiro : passageiros) {
-            split.getStatusPagamento().put(passageiro, false);
-        }
-
-        split.setId(splits.size() + 1); // Gerando um ID simples para o split
-        splits.put(split.getId(), split);
-        return split;
+        splitRepository.save(split);
     }
 
-    // Método para realizar o pagamento de um passageiro
-    public Split realizarPagamento(int splitId, Passageiro passageiro) {
-        Split split = splits.get(splitId);
-        if (split != null && split.getStatusPagamento().containsKey(passageiro)) {
-            split.getStatusPagamento().put(passageiro, true); // Marcando como pago
-        }
-        return split;
-    }
-
-    // Método para verificar se todos os passageiros pagaram
-    public boolean todosPagaram(int splitId) {
-        Split split = splits.get(splitId);
-        if (split != null) {
-            for (boolean pago : split.getStatusPagamento().values()) {
-                if (!pago) {
-                    return false; // Se algum passageiro não pagou, retorna false
-                }
-            }
-            return true; // Todos pagaram
-        }
-        return false;
-    }
-
-    // Método para buscar uma divisão de pagamento
-    public Split getSplit(int splitId) {
-        return splits.get(splitId);
+    public List<Split> listarSplits() {
+        return splitRepository.findAll();
     }
 }
